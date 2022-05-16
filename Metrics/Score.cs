@@ -39,17 +39,21 @@ namespace Metrics
 
         public float GetPrecision()
         {
+            if (truePositive + falsePositive == 0) return 0;
             return truePositive / (float)(truePositive + falsePositive);
         }
 
         public float GetRecall()
         {
+            if (truePositive + falseNegative == 0) return 0;
             return truePositive / (float)(truePositive + falseNegative);
         }
 
         public float GetF1()
         {
-            return (float)(2 * GetPrecision() * GetRecall()) / (GetPrecision() + GetRecall());
+            if (GetPrecision() + GetRecall() == 0) return 0;
+            else return (float)(2 * GetPrecision() * GetRecall()) / 
+                               (GetPrecision() + GetRecall());
         }
     }
 }

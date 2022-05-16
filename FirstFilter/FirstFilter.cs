@@ -86,14 +86,14 @@ namespace FirstFilter
                                 OpenCvSharp.RotatedRect rect = Cv2.MinAreaRect(contour);
                                 OpenCvSharp.Point2f[] vertices = rect.Points();
 
+                                for (int i = 0; i < 4; i++)
+                                    Cv2.Line(image, (OpenCvSharp.Point)vertices[i],
+                                                    (OpenCvSharp.Point)vertices[(i + 1) % 4],
+                                                    new Scalar(0, 255, 0));
+                                watch.Stop();
+
                                 using (Graphics graphic = Graphics.FromImage(tempImage))
                                 {
-                                    for (int i = 0; i < 4; i++)
-                                        Cv2.Line(image, (OpenCvSharp.Point)vertices[i],
-                                                        (OpenCvSharp.Point)vertices[(i + 1) % 4],
-                                                        new Scalar(0, 255, 0));
-                                    watch.Stop();
-
                                     graphic.FillRectangle(brush, vertices[0].X, vertices[0].Y, rect.Size.Height, rect.Size.Width);
                                     graphic.RotateTransform(rect.Angle);
 
@@ -102,7 +102,7 @@ namespace FirstFilter
                             }
                         }
 
-                        Mat mask = Cv2.ImRead($@"C:\Users\Denis\source\repos\Алгоритмы для курсовой работы\algorithms\Images\Annotation\Train\img{id}.png", ImreadModes.Unchanged);
+                        Mat mask = Cv2.ImRead($@"C:\Users\Denis\source\repos\Алгоритмы для курсовой работы\algorithms\Images\Annotation\groundtruth_textregion\Train\img{id}.png", ImreadModes.Unchanged);
                         Cv2.Resize(mask, mask, new OpenCvSharp.Size(1024, 512));
                         Metrics.Score scores = new Metrics.Score(OpenCvSharp.Extensions.BitmapConverter.ToBitmap(mask), tempImage);
                         sheet.Cell($"A{row}").Value = "img" + id.ToString();
@@ -110,6 +110,8 @@ namespace FirstFilter
                         sheet.Cell($"C{row}").Value = scores.GetF1();
                         sheet.Cell($"D{row}").Value = watch.ElapsedMilliseconds;
 
+                        if (row % 100 == 0) Console.WriteLine(id);
+    
                         //Console.WriteLine($"Accuracy: {scores.GetAccuracy()}\nF1: {scores.GetF1()}\nTime: {watch.ElapsedMilliseconds} ms");
 
                         /*using (new Window("result", image, WindowFlags.AutoSize))
@@ -120,7 +122,7 @@ namespace FirstFilter
                     row++;
                 }
             }
-            newExcelFile.SaveAs(@"absolute path");
+            newExcelFile.SaveAs(@"C:\Users\Denis\source\repos\Алгоритмы для курсовой работы\algorithms\first-filter.xlsx");
         }
     }
 }

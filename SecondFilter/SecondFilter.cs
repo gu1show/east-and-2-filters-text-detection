@@ -31,32 +31,32 @@ namespace FirstFilter
                         Cv2.Resize(image, image, new OpenCvSharp.Size(1024, 512));
                         Cv2.Resize(gray, gray, new OpenCvSharp.Size(1024, 512));
 
-                        /*using (new Window("image", image, WindowFlags.AutoSize))
+                        using (new Window("image", image, WindowFlags.AutoSize))
                         {
                             Cv2.WaitKey();
                         }
                         using (new Window("gray image", gray, WindowFlags.AutoSize))
                         {
                             Cv2.WaitKey();
-                        }*/
+                        }
 
                         Mat threshold = new Mat();
                         Cv2.AdaptiveThreshold(gray, threshold, 255,
                                               AdaptiveThresholdTypes.GaussianC,
                                               ThresholdTypes.Binary, 23, 0);
-                        /*using (new Window("adaptive threshold", threshold, WindowFlags.AutoSize))
+                        using (new Window("adaptive threshold", threshold, WindowFlags.AutoSize))
                         {
                             Cv2.WaitKey();
-                        }*/
+                        }
 
                         Mat kernel = new Mat();
                         Cv2.GetStructuringElement(MorphShapes.Rect, new OpenCvSharp.Size(5, 5));
                         Mat erode = new Mat();
                         Cv2.Erode(threshold, erode, kernel);
-                        /*using (new Window("Erode", erode, WindowFlags.AutoSize))
+                        using (new Window("Erode", erode, WindowFlags.AutoSize))
                         {
                             Cv2.WaitKey();
-                        }*/
+                        }
 
                         OpenCvSharp.Point[][] contours = new OpenCvSharp.Point[1][];
                         HierarchyIndex[] temp = new HierarchyIndex[1];
@@ -72,7 +72,7 @@ namespace FirstFilter
                         foreach (var contour in contours)
                         {
                             var area = Cv2.ContourArea(contour);
-                            if (area > 500)
+                            if (area > 2000)
                             {
                                 OpenCvSharp.RotatedRect rect = Cv2.MinAreaRect(contour);
                                 OpenCvSharp.Point2f[] vertices = rect.Points();
@@ -88,13 +88,12 @@ namespace FirstFilter
                                     graphic.FillRectangle(brush, vertices[0].X, vertices[0].Y, rect.Size.Height, rect.Size.Width);
                                     graphic.RotateTransform(rect.Angle);
 
-                                    tempImage.Save(@"C:\Users\Denis\source\repos\Алгоритмы для курсовой работы\algorithms\os.png", System.Drawing.Imaging.ImageFormat.Png);
+                                    //tempImage.Save(@"C:\Users\Denis\source\repos\Алгоритмы для курсовой работы\algorithms\os.png", System.Drawing.Imaging.ImageFormat.Png);
                                 }
-
                             }
                         }
 
-                        Mat mask = Cv2.ImRead($@"C:\Users\Denis\source\repos\Алгоритмы для курсовой работы\algorithms\Images\Annotation\Train\img{id}.png", ImreadModes.Unchanged);
+                        Mat mask = Cv2.ImRead($@"C:\Users\Denis\source\repos\Алгоритмы для курсовой работы\algorithms\Images\Annotation\groundtruth_textregion\Train\img{id}.png", ImreadModes.Unchanged);
                         Cv2.Resize(mask, mask, new OpenCvSharp.Size(1024, 512));
                         Metrics.Score scores = new Metrics.Score(OpenCvSharp.Extensions.BitmapConverter.ToBitmap(mask), tempImage);
                         sheet.Cell($"A{row}").Value = "img" + id.ToString();
@@ -102,12 +101,12 @@ namespace FirstFilter
                         sheet.Cell($"C{row}").Value = scores.GetF1();
                         sheet.Cell($"D{row}").Value = watch.ElapsedMilliseconds;
 
-                        //Console.WriteLine($"Accuracy: {scores.GetAccuracy()}\nF1: {scores.GetF1()}\nTime: {watch.ElapsedMilliseconds} ms");
+                        Console.WriteLine($"Accuracy: {scores.GetAccuracy()}\nF1: {scores.GetF1()}\nTime: {watch.ElapsedMilliseconds} ms");
 
-                        /*using (new Window("result", image, WindowFlags.AutoSize))
+                        using (new Window("result", image, WindowFlags.AutoSize))
                         {
                             Cv2.WaitKey();
-                        }*/
+                        }
                     }
                     row++;
                 }
