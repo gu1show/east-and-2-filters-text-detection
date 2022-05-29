@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecondFilter", "SecondFilte
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metrics", "Metrics\Metrics.csproj", "{28924068-AB4F-4DE7-8687-086CF2096AB6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "East", "East\East.csproj", "{41D2EFB2-5EED-4629-91AE-1F580CABA6F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{28924068-AB4F-4DE7-8687-086CF2096AB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28924068-AB4F-4DE7-8687-086CF2096AB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28924068-AB4F-4DE7-8687-086CF2096AB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41D2EFB2-5EED-4629-91AE-1F580CABA6F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41D2EFB2-5EED-4629-91AE-1F580CABA6F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41D2EFB2-5EED-4629-91AE-1F580CABA6F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41D2EFB2-5EED-4629-91AE-1F580CABA6F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

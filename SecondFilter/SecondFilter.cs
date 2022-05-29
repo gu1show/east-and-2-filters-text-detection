@@ -84,7 +84,7 @@ namespace FirstFilter
                                                         (OpenCvSharp.Point)vertices[(i + 1) % 4],
                                                         new Scalar(0, 255, 0));
                                     watch.Stop();
-                                    
+
                                     graphic.FillRectangle(brush, vertices[0].X, vertices[0].Y, rect.Size.Height, rect.Size.Width);
                                     graphic.RotateTransform(rect.Angle);
 

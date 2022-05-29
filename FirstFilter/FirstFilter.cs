@@ -111,7 +111,7 @@ namespace FirstFilter
                         sheet.Cell($"D{row}").Value = watch.ElapsedMilliseconds;
 
                         if (row % 100 == 0) Console.WriteLine(id);
-    
+
                         //Console.WriteLine($"Accuracy: {scores.GetAccuracy()}\nF1: {scores.GetF1()}\nTime: {watch.ElapsedMilliseconds} ms");
 
                         /*using (new Window("result", image, WindowFlags.AutoSize))
