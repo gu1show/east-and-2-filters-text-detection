@@ -13,99 +13,153 @@ namespace East
     {
         static void Main(string[] args)
         {
-            SolidBrush brush = new SolidBrush(Color.White);
-            Net net = CvDnn.ReadNet(@"absolute path to a trained EAST");
-
-            IXLWorkbook newExcelFile = new XLWorkbook();
-            IXLWorksheet sheet = newExcelFile.Worksheets.Add("First filter");
-            sheet.Cell("A1").Value = "Image";
-            sheet.Cell("B1").Value = "Accuracy";
-            sheet.Cell("C1").Value = "F1";
-            sheet.Cell("D1").Value = "Time";
-
-            int row = 2;
-            for (short id = 11; id < 1539; id++)
+            for (int m = 0; m < 9; m++)
             {
-                if (File.Exists($@"absolute path to an image to be processed"))
+                float confidenceThreshold = 0, nmsThresold = 0;
+                float[] arrConfidence = new float[3] { 0.4f , 0.3f, 0.5f };
+                float[] arrNms = new float[3] { 0.4f, 0.3f, 0.5f };
+
+                if (m == 0)
                 {
-                    var watch = System.Diagnostics.Stopwatch.StartNew();
-                    Mat image = new Mat($@"absolute path to an image to be processed");
-                    Mat workingImage = new Mat();
-                    Mat tempImage = new Mat();
-                    image.CopyTo(workingImage);
-                    image.CopyTo(tempImage);
-                    tempImage.SetTo(new Scalar(0, 0, 0));
-
-                    OpenCvSharp.Size newSize = new OpenCvSharp.Size(320, 320);
-                    float rateWidth = (float)image.Width / 320;
-                    float rateHeight = (float)image.Height / 320;
-
-                    Cv2.Resize(workingImage, workingImage, newSize);
-                    using (var blob = CvDnn.BlobFromImage(workingImage, 1, newSize,
-                                                          new Scalar(123.68, 116.78, 103.94),
-                                                          true, false))
-                    {
-                        String[] outputBlobNames = new String[] { "feature_fusion/Conv_7/Sigmoid",
-                                                                  "feature_fusion/concat_3" };
-                        Mat[] outputBlobs = outputBlobNames.Select(_ => new Mat()).ToArray();
-
-                        net.SetInput(blob);
-                        net.Forward(outputBlobs, outputBlobNames);
-                        Mat scores = outputBlobs[0];
-                        Mat geometry = outputBlobs[1];
-
-                        float confidenceThreshold = 0.4f;
-                        float nmsThresold = 0.4f;
-                        Decode(scores, geometry, confidenceThreshold,
-                               out var boxes, out var confidence);
-                        CvDnn.NMSBoxes(boxes, confidence, confidenceThreshold,
-                                       nmsThresold, out var indices);
-
-
-                        for (int i = 0; i < indices.Length; i++)
-                        {
-                            RotatedRect rect = boxes[indices[i]];
-                            Point2f[] vertices = rect.Points();
-                            for (int j = 0; j < 4; j++)
-                            {
-                                vertices[j].X *= rateWidth;
-                                vertices[j].Y *= rateHeight;
-                            }
-
-                            for (int j = 0; j < 4; j++)
-                                Cv2.Line(image,
-                                         (int)vertices[j].X,
-                                         (int)vertices[j].Y,
-                                         (int)vertices[(j + 1) % 4].X,
-                                         (int)vertices[(j + 1) % 4].Y,
-                                         new Scalar(0, 255, 0));
-
-                            watch.Stop();
-
-
-                            Cv2.Rectangle(tempImage,
-                                          new OpenCvSharp.Point(vertices[0].X,
-                                                                vertices[0].Y),
-                                          new OpenCvSharp.Point(vertices[2].X,
-                                                                vertices[2].Y),
-                                          new Scalar(255, 255, 255), -1);
-                        }
-                    }
-
-                    Mat mask = Cv2.ImRead($@"absolute path to an image to be compared with", ImreadModes.Unchanged);
-                    Cv2.Resize(mask, mask, new OpenCvSharp.Size(image.Width, image.Height));
-                    Metrics.Score scoresMetric =
-                        new Metrics.Score(OpenCvSharp.Extensions.BitmapConverter.ToBitmap(mask),
-                                          OpenCvSharp.Extensions.BitmapConverter.ToBitmap(tempImage));
-                    sheet.Cell($"A{row}").Value = "img" + id.ToString();
-                    sheet.Cell($"B{row}").Value = scoresMetric.GetAccuracy();
-                    sheet.Cell($"C{row}").Value = scoresMetric.GetF1();
-                    sheet.Cell($"D{row}").Value = watch.ElapsedMilliseconds;
-                    row++;
-                    //Console.WriteLine($"Accuracy: {scoresMetric.GetAccuracy()}\nF1: {scoresMetric.GetF1()}\nTime: {watch.ElapsedMilliseconds} ms");
+                    confidenceThreshold = arrConfidence[0];
+                    nmsThresold = arrNms[0];
                 }
+                else if (m == 1)
+                {
+                    confidenceThreshold = arrConfidence[0];
+                    nmsThresold = arrNms[1];
+                }
+                else if (m == 2)
+                {
+                    confidenceThreshold = arrConfidence[0];
+                    nmsThresold = arrNms[2];
+                }
+                else if (m == 3)
+                {
+                    confidenceThreshold = arrConfidence[1];
+                    nmsThresold = arrNms[0];
+                }
+                else if (m == 4)
+                {
+                    confidenceThreshold = arrConfidence[1];
+                    nmsThresold = arrNms[1];
+                }
+                else if (m == 5)
+                {
+                    confidenceThreshold = arrConfidence[1];
+                    nmsThresold = arrNms[2];
+                }
+                else if (m == 6)
+                {
+                    confidenceThreshold = arrConfidence[2];
+                    nmsThresold = arrNms[0];
+                }
+                else if (m == 7)
+                {
+                    confidenceThreshold = arrConfidence[2];
+                    nmsThresold = arrNms[1];
+                }
+                else
+                {
+                    confidenceThreshold = arrConfidence[2];
+                    nmsThresold = arrNms[2];
+                }
+
+                Net net = CvDnn.ReadNet(@"C:\Users\Denis\source\repos\Алгоритмы для курсовой работы\algorithms\East\bin\Debug\frozen_east_text_detection.pb");
+
+                Console.WriteLine($"{m + 1} iteration / 9");
+                IXLWorkbook newExcelFile = new XLWorkbook();
+                IXLWorksheet sheet = newExcelFile.Worksheets.Add("EAST");
+                sheet.Cell("A1").Value = "Image";
+                sheet.Cell("B1").Value = "Accuracy";
+                sheet.Cell("C1").Value = "F1";
+                sheet.Cell("D1").Value = "Time";
+
+                int row = 2;
+                for (short id = 11; id < 1539; id++)
+                {
+                    if (File.Exists($@"C:\Users\Denis\source\repos\Алгоритмы для курсовой работы\algorithms\Images\Train\img{id}.jpg"))
+                    {
+                        var watch = System.Diagnostics.Stopwatch.StartNew();
+                        Mat image = new Mat($@"C:\Users\Denis\source\repos\Алгоритмы для курсовой работы\algorithms\Images\Train\img{id}.jpg");
+                        Mat workingImage = new Mat();
+                        Mat tempImage = new Mat();
+                        image.CopyTo(workingImage);
+                        image.CopyTo(tempImage);
+                        tempImage.SetTo(new Scalar(0, 0, 0));
+
+                        OpenCvSharp.Size newSize = new OpenCvSharp.Size(320, 320);
+                        float rateWidth = (float)image.Width / 320;
+                        float rateHeight = (float)image.Height / 320;
+
+                        Cv2.Resize(workingImage, workingImage, newSize);
+                        using (var blob = CvDnn.BlobFromImage(workingImage, 1, newSize,
+                                                              new Scalar(123.68, 116.78, 103.94),
+                                                              true, false))
+                        {
+                            String[] outputBlobNames = new String[] { "feature_fusion/Conv_7/Sigmoid",
+                                                                      "feature_fusion/concat_3" };
+                            Mat[] outputBlobs = outputBlobNames.Select(_ => new Mat()).ToArray();
+
+                            net.SetInput(blob);
+                            net.Forward(outputBlobs, outputBlobNames);
+                            Mat scores = outputBlobs[0];
+                            Mat geometry = outputBlobs[1];
+
+                            Decode(scores, geometry, confidenceThreshold,
+                                   out var boxes, out var confidence);
+                            CvDnn.NMSBoxes(boxes, confidence, confidenceThreshold,
+                                           nmsThresold, out var indices);
+
+
+                            for (int i = 0; i < indices.Length; i++)
+                            {
+                                RotatedRect rect = boxes[indices[i]];
+                                Point2f[] vertices = rect.Points();
+                                for (int j = 0; j < 4; j++)
+                                {
+                                    vertices[j].X *= rateWidth;
+                                    vertices[j].Y *= rateHeight;
+                                }
+
+                                for (int j = 0; j < 4; j++)
+                                    Cv2.Line(image,
+                                             (int)vertices[j].X,
+                                             (int)vertices[j].Y,
+                                             (int)vertices[(j + 1) % 4].X,
+                                             (int)vertices[(j + 1) % 4].Y,
+                                             new Scalar(0, 255, 0));
+
+                                watch.Stop();
+
+
+                                Cv2.Rectangle(tempImage,
+                                              new OpenCvSharp.Point(vertices[0].X,
+                                                                    vertices[0].Y),
+                                              new OpenCvSharp.Point(vertices[2].X,
+                                                                    vertices[2].Y),
+                                              new Scalar(255, 255, 255), -1);
+                            }
+                        }
+
+                        Mat mask = Cv2.ImRead($@"C:\Users\Denis\source\repos\Алгоритмы для курсовой работы\algorithms\Images\Annotation\groundtruth_textregion\Train\img{id}.png", ImreadModes.Unchanged);
+                        Cv2.Resize(mask, mask, new OpenCvSharp.Size(image.Width, image.Height));
+                        Metrics.Score scoresMetric =
+                            new Metrics.Score(OpenCvSharp.Extensions.BitmapConverter.ToBitmap(mask),
+                                              OpenCvSharp.Extensions.BitmapConverter.ToBitmap(tempImage));
+                        sheet.Cell($"A{row}").Value = "img" + id.ToString();
+                        sheet.Cell($"B{row}").Value = scoresMetric.GetAccuracy();
+                        sheet.Cell($"C{row}").Value = scoresMetric.GetF1();
+                        sheet.Cell($"D{row}").Value = watch.ElapsedMilliseconds;
+                        row++;
+
+                        if (row % 10 == 0) Console.WriteLine($"{m + 1} iteration: {id} image is processed");
+
+                        Console.WriteLine($"Accuracy: {scoresMetric.GetAccuracy()}\nF1: {scoresMetric.GetF1()}\nTime: {watch.ElapsedMilliseconds} ms");
+                    }
+                }
+                newExcelFile.SaveAs($@"C:\Users\Denis\source\repos\Алгоритмы для курсовой работы\algorithms\east {confidenceThreshold} {nmsThresold}.xlsx");
             }
-            newExcelFile.SaveAs(@"absolute path where to save .xlsx file");
         }
 
         private static unsafe void Decode(Mat scores, Mat geometry,

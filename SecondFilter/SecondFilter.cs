@@ -9,7 +9,7 @@ namespace FirstFilter
     {
         static void Main(string[] args)
         {
-            for (int m = 0; m < 16; m++)
+            for (int m = 0; m < 9; m++)
             {
                 //const int width = 1024, height = 512;
                 int adaptiveThreshold = 0, kernelSize = 0;
@@ -19,7 +19,7 @@ namespace FirstFilter
                 if (m == 0)
                 {
                     adaptiveThreshold = arrAdapt[0];
-                    kernelSize = arrKernel[1];
+                    kernelSize = arrKernel[0];
                 }
                 else if (m == 1)
                 {
@@ -62,7 +62,7 @@ namespace FirstFilter
                     kernelSize = arrKernel[2];
                 }
 
-                Console.WriteLine($"{m + 1} iteration / 27");
+                Console.WriteLine($"{m + 1} iteration / 9");
                 IXLWorkbook newExcelFile = new XLWorkbook();
                 IXLWorksheet sheet = newExcelFile.Worksheets.Add("First filter");
                 sheet.Cell("A1").Value = "Image";
