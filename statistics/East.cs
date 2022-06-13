@@ -13,10 +13,7 @@ namespace statistics
 {
     internal class East : IDetectable
     {
-        private readonly Net net = CvDnn.ReadNet(@"C:\Users\Denis\source\repos\" +
-                                                 @"Алгоритмы для курсовой работы\" +
-                                                 @"algorithms\East\bin\Debug\" +
-                                                 @"frozen_east_text_detection.pb");
+        private readonly Net net = CvDnn.ReadNet(@"absolute path to frozen EAST");
         private readonly Mat maskImage;
         private readonly float confidenceThreshold;
         private readonly float nmsThreshold;
@@ -33,12 +30,12 @@ namespace statistics
             return maskImage;
         }
 
-        public void CreateMask(Mat image)
+        public void CreateMask(String pathToImage)
         {
-            Mat workingImage = new Mat();
-            image.CopyTo(workingImage);
-            image.CopyTo(this.maskImage);
-            this.maskImage.SetTo(new Scalar(0, 0, 0));
+            Mat image = Cv2.ImRead(pathToImage, ImreadModes.Color);
+            Mat workingImage = Cv2.ImRead(pathToImage, ImreadModes.Color);
+            image.CopyTo(maskImage);
+            maskImage.SetTo(new Scalar(0, 0, 0));
 
             OpenCvSharp.Size newSize = new OpenCvSharp.Size(320, 320);
             float rateWidth = (float)image.Width / 320;

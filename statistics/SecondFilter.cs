@@ -1,4 +1,5 @@
 ﻿using OpenCvSharp;
+using System;
 
 namespace statistics
 {
@@ -20,10 +21,10 @@ namespace statistics
             return maskImage;
         }
 
-        public void CreateMask(Mat image)
+        public void CreateMask(String pathToImage)
         {
-            Mat workingImage = new Mat();
-            image.CopyTo(workingImage);
+            Mat image = Cv2.ImRead(pathToImage, ImreadModes.Color);
+            Mat workingImage = Cv2.ImRead(pathToImage, ImreadModes.Grayscale);
             image.CopyTo(maskImage);
             maskImage.SetTo(new Scalar(0, 0, 0));
 

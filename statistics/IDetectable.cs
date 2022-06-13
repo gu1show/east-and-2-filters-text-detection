@@ -1,10 +1,11 @@
 ﻿using OpenCvSharp;
+using System;
 
 namespace statistics
 {
     internal interface IDetectable
     {
-        void CreateMask(Mat image);
+        void CreateMask(String pathToImage);
 
         Mat ReturnMask();
     }

@@ -5,8 +5,8 @@ namespace statistics
 {
     internal class ExcelFileCreator
     {
-        IXLWorkbook newExcelFile;
-        IXLWorksheet sheet;
+        private readonly IXLWorkbook newExcelFile;
+        private IXLWorksheet sheet;
 
         public ExcelFileCreator(int choise)
         {
@@ -17,7 +17,7 @@ namespace statistics
         public void AddNewImage(String filename, int row, float accuracy,
                                 float f1, float time)
         {
-            
+
             sheet.Cell($"A{row}").Value = filename;
             sheet.Cell($"B{row}").Value = accuracy;
             sheet.Cell($"C{row}").Value = f1;
@@ -38,7 +38,6 @@ namespace statistics
 
         private void PrepareExcelFile(int choise)
         {
-            
             if (choise == 1)
                 sheet = newExcelFile.Worksheets.Add("First filter");
             else if (choise == 2)
@@ -53,6 +52,6 @@ namespace statistics
             sheet.Cell("F1").Value = "Accuracy average";
             sheet.Cell("G1").Value = "F1 average";
             sheet.Cell("H1").Value = "Time average";
-        }     
+        }
     }
 }

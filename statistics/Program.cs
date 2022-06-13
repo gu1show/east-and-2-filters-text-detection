@@ -36,7 +36,7 @@ namespace statistics
 
                     if ((pathToFolderWithImages != "") && (pathToFolderWithMasks != ""))
                     {
-                        Console.WriteLine("\nStart processing");
+                        Console.WriteLine("\nStart processing\n");
                         int processedImages = 0;
                         ProcessFolderWithImages(collector,
                                                 pathToFolderWithImages,
@@ -61,9 +61,8 @@ namespace statistics
 
                     if ((pathToImage != "") && (pathToMask != ""))
                     {
-                        Console.WriteLine("\nStart processing");
-                        collector.CollectStatictics(new OpenCvSharp.Mat(pathToImage),
-                                                    new OpenCvSharp.Mat(pathToMask));
+                        Console.WriteLine("\nStart processing\n");
+                        collector.CollectStatictics(pathToImage, pathToMask);
                         LogProcess(collector, pathToImage);
                         Console.WriteLine("\nProcessed images at all: 1\n" +
                                           "Processing completed\n");
@@ -244,8 +243,7 @@ namespace statistics
                 pathToMaskInFolder = CreateFullPathToMask(pathToMaskInFolder);
                 if (File.Exists(pathToMaskInFolder))
                 {
-                    collector.CollectStatictics(new OpenCvSharp.Mat(imageFileName),
-                                                new OpenCvSharp.Mat(pathToMaskInFolder));
+                    collector.CollectStatictics(imageFileName, pathToMaskInFolder);
                     LogProcess(collector, imageFileName);
                     processedImages++;
                     newFile.AddNewImage(Path.GetFileNameWithoutExtension(imageFileName),
@@ -254,7 +252,7 @@ namespace statistics
                                         collector.GetF1(),
                                         collector.GetTime());
                     if (processedImages % 10 == 0)
-                        Console.WriteLine($"\nProcessed images: {processedImages}\n");
+                        Console.WriteLine($"\nProcessed images: {processedImages}\n\n");
                 }
             }
 
@@ -279,7 +277,7 @@ namespace statistics
             Console.WriteLine($"Name: {Path.GetFileNameWithoutExtension(pathToImage)}");
             Console.WriteLine($"Accuracy: {collector.GetAccuracy()}");
             Console.WriteLine($"F1: {collector.GetF1()}");
-            Console.WriteLine($"Time: {collector.GetTime()}");
+            Console.WriteLine($"Time: {collector.GetTime()}\n");
         }
     }
 }
