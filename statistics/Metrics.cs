@@ -1,12 +1,12 @@
 ﻿using System.Drawing;
 
-namespace Metrics
+namespace statistics
 {
-    public class Score
+    internal class Metrics
     {
         int truePositive = 0, trueNegative = 0, falsePositive = 0, falseNegative = 0;
 
-        public Score(Bitmap correct, Bitmap inspected)
+        public Metrics(Bitmap correct, Bitmap inspected)
         {
             for (int i = 0; i < correct.Width; i++)
                 for (int j = 0; j < correct.Height; j++)
@@ -52,7 +52,7 @@ namespace Metrics
         public float GetF1()
         {
             if (GetPrecision() + GetRecall() == 0) return 0;
-            else return (float)(2 * GetPrecision() * GetRecall()) / 
+            else return (float)(2 * GetPrecision() * GetRecall()) /
                                (GetPrecision() + GetRecall());
         }
     }

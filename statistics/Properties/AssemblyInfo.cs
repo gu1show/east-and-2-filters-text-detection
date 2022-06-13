@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Общие сведения об этой сборке предоставляются следующим набором
 // набора атрибутов. Измените значения этих атрибутов для изменения сведений,
 // связанные с этой сборкой.
-[assembly: AssemblyTitle("SecondFilter")]
+[assembly: AssemblyTitle("statistics")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("HP")]
-[assembly: AssemblyProduct("SecondFilter")]
+[assembly: AssemblyProduct("statistics")]
 [assembly: AssemblyCopyright("Copyright © HP 2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Следующий GUID представляет идентификатор typelib, если этот проект доступен из модели COM
-[assembly: Guid("02f91aa8-806e-4e99-aa19-9e5f4054d0f6")]
+[assembly: Guid("2801d8f5-3ea6-4693-a5ab-9b09f71b9752")]
 
 // Сведения о версии сборки состоят из указанных ниже четырех значений:
 //
