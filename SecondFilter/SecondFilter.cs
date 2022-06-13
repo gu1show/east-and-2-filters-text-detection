@@ -13,7 +13,7 @@ namespace FirstFilter
             int adaptiveThreshold = 25, kernelSize = 3;
 
             IXLWorkbook newExcelFile = new XLWorkbook();
-            IXLWorksheet sheet = newExcelFile.Worksheets.Add("First filter");
+            IXLWorksheet sheet = newExcelFile.Worksheets.Add("Second filter");
             sheet.Cell("A1").Value = "Image";
             sheet.Cell("B1").Value = "Accuracy";
             sheet.Cell("C1").Value = "F1";
@@ -22,11 +22,11 @@ namespace FirstFilter
             int row = 2;
             for (short id = 1; id < 1556; id++)
             {
-                if (File.Exists($@"absolute path to test image"))
+                if (File.Exists($@"C:\Users\Denis\source\repos\Алгоритмы для курсовой работы\algorithms\Images\Test\img{id}.jpg"))
                 {
                     var watch = System.Diagnostics.Stopwatch.StartNew();
-                    Mat image = Cv2.ImRead($@"absolute path to test image", ImreadModes.Color);
-                    Mat workingImage = Cv2.ImRead($@"absolute path to test image", ImreadModes.Grayscale);
+                    Mat image = Cv2.ImRead($@"C:\Users\Denis\source\repos\Алгоритмы для курсовой работы\algorithms\Images\Test\img{id}.jpg", ImreadModes.Color);
+                    Mat workingImage = Cv2.ImRead($@"C:\Users\Denis\source\repos\Алгоритмы для курсовой работы\algorithms\Images\Test\img{id}.jpg", ImreadModes.Grayscale);
                     Mat tempImage = new Mat();
                     image.CopyTo(tempImage);
                     tempImage.SetTo(new Scalar(0, 0, 0));
@@ -75,7 +75,7 @@ namespace FirstFilter
                         }
                     }
 
-                    Mat mask = Cv2.ImRead($@"absolute path to mask", ImreadModes.Unchanged);
+                    Mat mask = Cv2.ImRead($@"C:\Users\Denis\source\repos\Алгоритмы для курсовой работы\algorithms\Images\Annotation\groundtruth_textregion\Test\img{id}.png", ImreadModes.Unchanged);
                     Cv2.Resize(mask, mask, new OpenCvSharp.Size(image.Width, image.Height));
                     Metrics.Score scores = new Metrics.Score(OpenCvSharp.Extensions.BitmapConverter.ToBitmap(mask), OpenCvSharp.Extensions.BitmapConverter.ToBitmap(tempImage));
                     sheet.Cell($"A{row}").Value = "img" + id.ToString();
@@ -89,7 +89,7 @@ namespace FirstFilter
                     row++;
                 }
             }
-            newExcelFile.SaveAs($@"absolute path to save xlsx file");
+            newExcelFile.SaveAs($@"C:\Users\Denis\source\repos\Алгоритмы для курсовой работы\algorithms\second-filter gold nova.xlsx");
         }
     }
 }

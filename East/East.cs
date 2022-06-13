@@ -12,9 +12,9 @@ namespace East
     {
         static void Main(string[] args)
         {
-            float confidenceThreshold = 0.3f, nmsThresold = 0.5f;
+            float confidenceThreshold = 0.3f, nmsThreshold = 0.5f;
 
-            Net net = CvDnn.ReadNet(@"absolute path to frozen EAST");
+            Net net = CvDnn.ReadNet(@"C:\Users\Denis\source\repos\Алгоритмы для курсовой работы\algorithms\East\bin\Debug\frozen_east_text_detection.pb");
 
             IXLWorkbook newExcelFile = new XLWorkbook();
             IXLWorksheet sheet = newExcelFile.Worksheets.Add("EAST");
@@ -26,10 +26,10 @@ namespace East
             int row = 2;
             for (short id = 1; id < 1556; id++)
             {
-                if (File.Exists($@"absolute path to test image"))
+                if (File.Exists($@"C:\Users\Denis\source\repos\Алгоритмы для курсовой работы\algorithms\Images\Test\img{id}.jpg"))
                 {
                     var watch = System.Diagnostics.Stopwatch.StartNew();
-                    Mat image = new Mat($@"absolute path to test image");
+                    Mat image = new Mat($@"C:\Users\Denis\source\repos\Алгоритмы для курсовой работы\algorithms\Images\Test\img{id}.jpg");
                     Mat workingImage = new Mat();
                     Mat tempImage = new Mat();
                     image.CopyTo(workingImage);
@@ -46,7 +46,7 @@ namespace East
                                                           true, false))
                     {
                         String[] outputBlobNames = new String[] { "feature_fusion/Conv_7/Sigmoid",
-                                                                  "feature_fusion/concat_3" };
+                                                                      "feature_fusion/concat_3" };
                         Mat[] outputBlobs = outputBlobNames.Select(_ => new Mat()).ToArray();
 
                         net.SetInput(blob);
@@ -57,7 +57,7 @@ namespace East
                         Decode(scores, geometry, confidenceThreshold,
                                out var boxes, out var confidence);
                         CvDnn.NMSBoxes(boxes, confidence, confidenceThreshold,
-                                       nmsThresold, out var indices);
+                                       nmsThreshold, out var indices);
 
 
                         for (int i = 0; i < indices.Length; i++)
@@ -90,7 +90,7 @@ namespace East
                         }
                     }
 
-                    Mat mask = Cv2.ImRead($@"absolute path to mask", ImreadModes.Unchanged);
+                    Mat mask = Cv2.ImRead($@"C:\Users\Denis\source\repos\Алгоритмы для курсовой работы\algorithms\Images\Annotation\groundtruth_textregion\Test\img{id}.png", ImreadModes.Unchanged);
                     Cv2.Resize(mask, mask, new OpenCvSharp.Size(image.Width, image.Height));
                     Metrics.Score scoresMetric =
                         new Metrics.Score(OpenCvSharp.Extensions.BitmapConverter.ToBitmap(mask),
@@ -106,7 +106,7 @@ namespace East
                     //Console.WriteLine($"Accuracy: {scoresMetric.GetAccuracy()}\nF1: {scoresMetric.GetF1()}\nTime: {watch.ElapsedMilliseconds} ms");
                 }
             }
-            newExcelFile.SaveAs($@"absolute path to save xlsx file");
+            newExcelFile.SaveAs($@"C:\Users\Denis\source\repos\Алгоритмы для курсовой работы\algorithms\east gold nova.xlsx");
         }
 
         private static unsafe void Decode(Mat scores, Mat geometry,
