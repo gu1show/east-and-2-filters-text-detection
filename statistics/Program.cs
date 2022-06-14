@@ -246,18 +246,18 @@ namespace statistics
                     collector.CollectStatictics(imageFileName, pathToMaskInFolder);
                     LogProcess(collector, imageFileName);
                     processedImages++;
-                    newFile.AddNewImage(Path.GetFileNameWithoutExtension(imageFileName),
-                                        processedImages + 1,
-                                        collector.GetAccuracy(),
-                                        collector.GetF1(),
-                                        collector.GetTime());
+                    newFile.AddNewImageMetrics(Path.GetFileNameWithoutExtension(imageFileName),
+                                               processedImages + 1,
+                                               collector.GetAccuracy(),
+                                               collector.GetF1(),
+                                               collector.GetTime());
                     if (processedImages % 10 == 0)
                         Console.WriteLine($"\nProcessed images: {processedImages}\n\n");
                 }
             }
 
             newFile.GetAverageMetrics(processedImages);
-            newFile.SaveFile(pathToFolderWithImages + "\\Result.xlsx");
+            newFile.SaveFile(pathToFolderWithMasks + "\\Result.xlsx");
         }
 
         private static String CreateFullPathToMask(String pathToMaskInFolder)

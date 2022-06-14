@@ -14,7 +14,7 @@ namespace statistics
             PrepareExcelFile(choise);
         }
 
-        public void AddNewImage(String filename, int row, float accuracy,
+        public void AddNewImageMetrics(String filename, int row, float accuracy,
                                 float f1, float time)
         {
 
