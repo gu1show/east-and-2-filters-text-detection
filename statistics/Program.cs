@@ -74,7 +74,8 @@ namespace statistics
 
         private static void OutputGeneralInformation()
         {
-            Console.WriteLine("The input parameters for each algorithm have limitations.\n");
+            Console.WriteLine("Link to README: https://github.com/gu1show/east-and-2-filters-text-detection/blob/main/README.md");
+            Console.WriteLine("\nThe input parameters for each algorithm have limitations.\n");
 
             Console.WriteLine("For the first filter we need 3 parameters:");
             Console.WriteLine("- matrix length for Gaussian blur;");
