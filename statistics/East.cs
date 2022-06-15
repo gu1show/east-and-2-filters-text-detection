@@ -13,7 +13,10 @@ namespace statistics
 {
     internal class East : IDetectable
     {
-        private readonly Net net = CvDnn.ReadNet(@"absolute path to frozen EAST");
+        private readonly Net net = CvDnn.ReadNet(@"C:\Users\Denis\source\repos\" +
+                                                 @"Алгоритмы для курсовой работы\" +
+                                                 @"algorithms\statistics\bin\Debug\" +
+                                                  "frozen_east_text_detection.pb");
         private readonly Mat maskImage;
         private readonly float confidenceThreshold;
         private readonly float nmsThreshold;

@@ -4,7 +4,10 @@ namespace statistics
 {
     internal class Metrics
     {
-        int truePositive = 0, trueNegative = 0, falsePositive = 0, falseNegative = 0;
+        private int truePositive = 0;
+        private int trueNegative = 0;
+        private int falsePositive = 0;
+        private int falseNegative = 0;
 
         public Metrics(Bitmap correct, Bitmap inspected)
         {

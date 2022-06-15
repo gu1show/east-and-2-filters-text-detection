@@ -17,7 +17,6 @@ namespace statistics
         public void AddNewImageMetrics(String filename, int row, float accuracy,
                                 float f1, float time)
         {
-
             sheet.Cell($"A{row}").Value = filename;
             sheet.Cell($"B{row}").Value = accuracy;
             sheet.Cell($"C{row}").Value = f1;

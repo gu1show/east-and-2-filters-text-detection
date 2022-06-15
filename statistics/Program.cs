@@ -196,7 +196,7 @@ namespace statistics
 
         private static bool IsCheckFolder()
         {
-            Console.WriteLine("Choose a way of use:");
+            Console.WriteLine("\nChoose a way of use:");
             Console.WriteLine("1 - a picture");
             Console.WriteLine("2 - a folder");
             Console.Write("Your choise: ");
@@ -277,7 +277,7 @@ namespace statistics
             Console.WriteLine($"Name: {Path.GetFileNameWithoutExtension(pathToImage)}");
             Console.WriteLine($"Accuracy: {collector.GetAccuracy()}");
             Console.WriteLine($"F1: {collector.GetF1()}");
-            Console.WriteLine($"Time: {collector.GetTime()}\n");
+            Console.WriteLine($"Time: {collector.GetTime()} ms\n");
         }
     }
 }
